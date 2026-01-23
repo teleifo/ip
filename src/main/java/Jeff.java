@@ -116,14 +116,34 @@ public class Jeff {
             String from = secondSplit[0].trim();
             String to = secondSplit[1].trim();
 
-            if (description.isEmpty()) throw new JeffException("Event description cannot be empty.\nFormat: event [description] /from [from] /to [to]");
-            if (from.isEmpty()) throw new JeffException("Event from cannot be empty.\nFormat: event [description] /from [from] /to [to]");
-            if (to.isEmpty()) throw new JeffException("Event to cannot be empty.\nFormat: event [description] /from [from] /to [to]");
+            if (description.isEmpty())
+                throw new JeffException("Event description cannot be empty.\nFormat: event [description] /from [from] /to [to]");
+            if (from.isEmpty())
+                throw new JeffException("Event from cannot be empty.\nFormat: event [description] /from [from] /to [to]");
+            if (to.isEmpty())
+                throw new JeffException("Event to cannot be empty.\nFormat: event [description] /from [from] /to [to]");
 
             Task t = new Event(description, from, to);
             list.add(t);
             return "Ok, I've added an Event task:\n" + t
                     + "\nThere " + ((list.size() > 1) ? "are " : "is ") + list.size() + " task(s) in the list.";
+        }
+
+        if (input.equals("delete") || input.startsWith("delete ")) {
+            if (list.isEmpty()) throw new JeffException("List is currently empty!");
+
+            String numStr = "";
+            if (input.length() > 6) numStr = input.substring(6).trim();
+            if (!isInteger(numStr)) throw new JeffException("You need to provide task ID!\nFormat: delete [task id]");
+
+            int num = Integer.parseInt(numStr);
+            if (num == 0) throw new JeffException("Task ID needs to be a valid number!\nFormat: delete [task id]");
+            if (num > list.size()) throw new JeffException("List only has " + list.size() + " item(s)");
+
+            Task t = list.remove(num-1);
+
+            return "Ok, I've removed this task: \n" + t
+                    + "\nThere " + ((list.size() != 1) ? "are " : "is ") + list.size() + " task(s) in the list.";
         }
 
         if (input.equals("bye") || input.startsWith("bye ")) return "Bye. Hope to see you again soon!";
