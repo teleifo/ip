@@ -8,15 +8,15 @@ public class Task {
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public boolean getDoneStatus() {
-        return this.doneStatus;
+        return doneStatus;
     }
 
     public String getDoneStatusIcon() {
-        return (this.doneStatus) ? "X" : " ";
+        return (doneStatus) ? "X" : " ";
     }
 
     public void updateDescription(String description) {
@@ -25,5 +25,10 @@ public class Task {
 
     public void updateDoneStatus(boolean doneStatus) {
         this.doneStatus = doneStatus;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%s] %s", getDoneStatusIcon(), description);
     }
 }

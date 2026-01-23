@@ -24,47 +24,111 @@ public class Jeff {
                 ____________________________________________________________""", message);
     }
 
-    private static String formatTask(Task t) {
-        return String.format("[%s] %s", t.getDoneStatusIcon(), t.getDescription());
-    }
+    private static String handleInput(String input) {
+        if (input.equals("list") || input.startsWith("list ")) {
+            if (list.isEmpty()) return formatReply("List is currently empty!");
 
-    private static String handleCommand(String command) {
-        String[] c = command.split(" ");
-        switch (c[0]) {
-            case "list" -> {
-                if (list.isEmpty()) return formatReply("List is currently empty!");
+            StringBuilder temp = new StringBuilder();
+            temp.append("Here are the tasks in your list:\n");
 
-                StringBuilder temp = new StringBuilder();
-                temp.append("Here are the tasks in your list:\n");
-
-                for (int i = 1; i <= list.size(); i++) {
-                    temp.append(i).append(". ").append(formatTask(list.get(i-1)));
-                    if (i != list.size()) temp.append("\n");
-                }
-
-                return formatReply(temp.toString());
+            for (int i = 1; i <= list.size(); i++) {
+                temp.append(i).append(". ").append(list.get(i-1));
+                if (i != list.size()) temp.append("\n");
             }
-            case "mark", "unmark" -> {
-                if (list.isEmpty()) return formatReply("List is currently empty!");
-                if (c.length == 1 || !isInteger(c[1])) return formatReply("You need to provide a valid number!");
 
-                int i = Integer.parseInt(c[1]);
-                if (i == 0) return formatReply("You need to provide a valid number!");
-                if (i > list.size()) return formatReply("List only has " + list.size() + " item(s)");
-
-                Task t = list.get(i-1);
-                t.updateDoneStatus(c[0].equals("mark"));
-                return formatReply("Ok, I've marked this task as " + (c[0].equals("mark") ? "" : "not ")
-                        + "done: \n" + formatTask(t));
-            }
-            case "bye" -> {
-                return formatReply("Bye. Hope to see you again soon!");
-            }
-            default -> {
-                list.add(new Task(command));
-                return formatReply("Added: " + command);
-            }
+            return formatReply(temp.toString());
         }
+
+        if (input.equals("mark") || input.startsWith("mark ")) {
+            if (list.isEmpty()) return formatReply("List is currently empty!");
+
+            String numStr = "";
+            if (input.length() > 4) numStr = input.substring(4).trim();
+            if (!isInteger(numStr)) return formatReply("You need to provide task ID!\nFormat: mark [task id]");
+
+            int num = Integer.parseInt(numStr);
+            if (num == 0) return formatReply("Task ID needs to be a valid number!\nFormat: mark [task id]");
+            if (num > list.size()) return formatReply("List only has " + list.size() + " item(s)");
+
+            Task t = list.get(Integer.parseInt(numStr)-1);
+            t.updateDoneStatus(true);
+
+            return formatReply("Ok, I've marked this task as done: \n" + t);
+        }
+
+        if (input.equals("unmark") || input.startsWith("unmark ")) {
+            if (list.isEmpty()) return formatReply("List is currently empty!");
+
+            String numStr = "";
+            if (input.length() > 6) numStr = input.substring(6).trim();
+            if (!isInteger(numStr)) return formatReply("You need to provide task ID!\nFormat: unmark [task id]");
+
+            int num = Integer.parseInt(numStr);
+            if (num == 0) return formatReply("Task ID needs to be a valid number!\nFormat: unmark [task id]");
+            if (num > list.size()) return formatReply("List only has " + list.size() + " item(s)");
+
+            Task t = list.get(Integer.parseInt(numStr)-1);
+            t.updateDoneStatus(false);
+
+            return formatReply("Ok, I've marked this task as not done: \n" + t);
+        }
+
+        if (input.equals("todo") || input.startsWith("todo ")) {
+            String description = "";
+
+            if (input.length() > 4) description = input.substring(4).trim();
+            if (description.isEmpty()) return formatReply("ToDo description cannot be empty.\nFormat: todo [description]");
+
+            Task t = new ToDo(description);
+            list.add(t);
+            return formatReply("Ok, I've added a ToDo task:\n" + t
+                    + "\nThere " + ((list.size() > 1) ? "are " : "is ") + list.size() + " task(s) in the list.");
+        }
+
+        if (input.equals("deadline") || input.startsWith("deadline ")) {
+            if (!input.contains(" /by")) {
+                return formatReply("Deadline must have /by.\nFormat: deadline [description] /by [due by]");
+            }
+
+            String[] parts = input.split(" /by", 2);
+
+            String description = parts[0].substring(8).trim();
+            String by = parts[1].trim();
+
+            if (description.isEmpty()) return formatReply("Deadline description cannot be empty.\nFormat: deadline [description] /by [due by]");
+            if (by.isEmpty()) return formatReply("Deadline due by cannot be empty.\nFormat: deadline [description] /by [due by]");
+
+            Task t = new Deadline(description, by);
+            list.add(t);
+            return formatReply("Ok, I've added a Deadline task:\n" + t
+                    + "\nThere " + ((list.size() > 1) ? "are " : "is ") + list.size() + " task(s) in the list.");
+        }
+
+        if (input.equals("event") || input.startsWith("event ")) {
+            if (!input.contains(" /from") || !input.contains(" /to")) {
+                return formatReply("Event must have /from and /to.\nFormat: event [description] /from [from] /to [to]");
+            }
+
+            String[] firstSplit = input.split(" /from", 2);
+            String description = firstSplit[0].substring(5).trim();
+
+            String[] secondSplit = firstSplit[1].split(" /to", 2);
+            String from = secondSplit[0].trim();
+            String to = secondSplit[1].trim();
+
+            if (description.isEmpty()) return formatReply("Event description cannot be empty.\nFormat: event [description] /from [from] /to [to]");
+            if (from.isEmpty()) return formatReply("Event from cannot be empty.\nFormat: event [description] /from [from] /to [to]");
+            if (to.isEmpty()) return formatReply("Event to cannot be empty.\nFormat: event [description] /from [from] /to [to]");
+
+            Task t = new Event(description, from, to);
+            list.add(t);
+            return formatReply("Ok, I've added an Event task:\n" + t
+                    + "\nThere " + ((list.size() > 1) ? "are " : "is ") + list.size() + " task(s) in the list.");
+        }
+
+        if (input.equals("bye") || input.startsWith("bye ")) return formatReply("Bye. Hope to see you again soon!");
+
+        return formatReply("Sorry, I don't know what that means!");
     }
 
     public static void main(String[] args)  {
@@ -79,12 +143,12 @@ public class Jeff {
 
         boolean loop = true;
         while (loop) {
-            String command = sc.nextLine();
+            String input = sc.nextLine();
 
-            String reply = handleCommand(command);
+            String reply = handleInput(input);
             System.out.println(reply);
 
-            if (command.equals("bye")) loop = false;
+            if (input.equals("bye") || input.startsWith("bye ")) loop = false;
         }
 
         sc.close();
