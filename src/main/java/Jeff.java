@@ -1,7 +1,11 @@
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.nio.file.Path;
+import java.nio.file.Files;
 
 public class Jeff {
+    private static final Path TASK_FILE = Path.of("data", "tasks.txt");
     private static final ArrayList<Task> list = new ArrayList<>();
 
     private static boolean isInteger(String str) {
@@ -22,6 +26,44 @@ public class Jeff {
                 ____________________________________________________________
                 %s
                 ____________________________________________________________""", message);
+    }
+
+    private static void ensureDataDirectory() throws JeffException {
+        try {
+            Files.createDirectories(TASK_FILE.getParent());
+        } catch (IOException e) {
+            throw new JeffException("Failed to create data directory");
+        }
+    }
+
+    private static void saveTasks() throws JeffException {
+        ArrayList<String> lines = new ArrayList<>();
+
+        for (Task t : list) {
+            lines.add(t.toFileString());
+        }
+
+        try {
+            Files.write(TASK_FILE, lines);
+        } catch (IOException e) {
+            throw new JeffException("Failed to save tasks to file");
+        }
+    }
+
+    private static void loadTasks() throws JeffException {
+        if (!Files.exists(TASK_FILE)) {
+            return; // no saved tasks, start fresh
+        }
+
+        try {
+            for (String line : Files.readAllLines(TASK_FILE)) {
+                if (line.isBlank()) continue; // safety
+                Task t = Task.fromFileString(line);
+                list.add(t);
+            }
+        } catch (IOException | IllegalArgumentException e) {
+            throw new JeffException(e.getMessage());
+        }
     }
 
     private static String handleInput(String input) throws JeffException {
@@ -53,6 +95,8 @@ public class Jeff {
             Task t = list.get(Integer.parseInt(numStr)-1);
             t.updateDoneStatus(true);
 
+            saveTasks();
+
             return "Ok, I've marked this task as done: \n" + t;
         }
 
@@ -70,6 +114,8 @@ public class Jeff {
             Task t = list.get(Integer.parseInt(numStr)-1);
             t.updateDoneStatus(false);
 
+            saveTasks();
+
             return "Ok, I've marked this task as not done: \n" + t;
         }
 
@@ -81,6 +127,9 @@ public class Jeff {
 
             Task t = new ToDo(description);
             list.add(t);
+
+            saveTasks();
+
             return "Ok, I've added a ToDo task:\n" + t
                     + "\nThere " + ((list.size() > 1) ? "are " : "is ") + list.size() + " task(s) in the list.";
         }
@@ -100,6 +149,9 @@ public class Jeff {
 
             Task t = new Deadline(description, by);
             list.add(t);
+
+            saveTasks();
+
             return "Ok, I've added a Deadline task:\n" + t
                     + "\nThere " + ((list.size() > 1) ? "are " : "is ") + list.size() + " task(s) in the list.";
         }
@@ -125,6 +177,9 @@ public class Jeff {
 
             Task t = new Event(description, from, to);
             list.add(t);
+
+            saveTasks();
+
             return "Ok, I've added an Event task:\n" + t
                     + "\nThere " + ((list.size() > 1) ? "are " : "is ") + list.size() + " task(s) in the list.";
         }
@@ -142,6 +197,8 @@ public class Jeff {
 
             Task t = list.remove(num-1);
 
+            saveTasks();
+
             return "Ok, I've removed this task: \n" + t
                     + "\nThere " + ((list.size() != 1) ? "are " : "is ") + list.size() + " task(s) in the list.";
         }
@@ -152,6 +209,13 @@ public class Jeff {
     }
 
     public static void main(String[] args)  {
+        try {
+            ensureDataDirectory();
+            loadTasks();
+        } catch (JeffException e) {
+            System.out.println(formatReply(e.getMessage()));
+        }
+
         Scanner sc = new Scanner(System.in);
 
         String greeting = """
