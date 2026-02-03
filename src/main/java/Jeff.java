@@ -1,8 +1,13 @@
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.nio.file.Path;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Jeff {
     private static final Path TASK_FILE = Path.of("data", "tasks.txt");
@@ -17,6 +22,32 @@ public class Jeff {
             Integer.parseInt(str);
             return true;
         } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private static boolean isDate(String str) {
+        if (str == null || str.isBlank()) {
+            return false;
+        }
+
+        try {
+            LocalDate.parse(str);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    private static boolean isDateTime(String str) {
+        if (str == null || str.isBlank()) {
+            return false;
+        }
+
+        try {
+            LocalDateTime.parse(str);
+            return true;
+        } catch (DateTimeParseException e) {
             return false;
         }
     }
@@ -52,14 +83,33 @@ public class Jeff {
 
     private static void loadTasks() throws JeffException {
         if (!Files.exists(TASK_FILE)) {
-            return; // no saved tasks, start fresh
+            return;
         }
 
         try {
             for (String line : Files.readAllLines(TASK_FILE)) {
-                if (line.isBlank()) continue; // safety
-                Task t = Task.fromFileString(line);
-                list.add(t);
+                if (line.isBlank()) continue;
+
+                String[] parts = line.split(" \\| ");
+
+                switch (parts[0]) {
+                    case "T":
+                        list.add(new ToDo(parts[2], parts[1].equals("1")));
+                        break;
+                    case "D":
+                        list.add(new Deadline(parts[2], parts[1].equals("1"), LocalDateTime.parse(parts[4]),
+                                parts[3].equals("1")));
+                        break;
+                    case "E":
+                        String timeRange = parts[4].substring(5);
+                        String[] fromTo = timeRange.split(" to ");
+                        list.add(new Event(parts[2], parts[1].equals("1"), LocalDateTime.parse(fromTo[0]),
+                                LocalDateTime.parse(fromTo[1]),
+                                parts[3].equals("1")));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid task format");
+                }
             }
         } catch (IOException | IllegalArgumentException e) {
             throw new JeffException(e.getMessage());
@@ -123,7 +173,7 @@ public class Jeff {
             String description = "";
 
             if (input.length() > 4) description = input.substring(4).trim();
-            if (description.isEmpty()) throw new JeffException("ToDo description cannot be empty.\nFormat: todo [description]");
+            if (description.isEmpty()) throw new JeffException("ToDo `description` cannot be empty.\nFormat: todo [description]");
 
             Task t = new ToDo(description);
             list.add(t);
@@ -143,11 +193,18 @@ public class Jeff {
 
             String description = parts[0].substring(8).trim();
             String by = parts[1].trim();
+            boolean isFullDay = !by.contains(":");
 
-            if (description.isEmpty()) throw new JeffException("Deadline description cannot be empty.\nFormat: deadline [description] /by [due by]");
-            if (by.isEmpty()) throw new JeffException("Deadline due by cannot be empty.\nFormat: deadline [description] /by [due by]");
+            if (description.isEmpty()) throw new JeffException("Deadline `description` cannot be empty.\nFormat: deadline [description] /by [due by]");
+            if (by.isEmpty()) throw new JeffException("Deadline `by` cannot be empty.\nFormat: deadline [description] /by [due by]");
+            if (!isDate(by) && !isDateTime(by)) throw new JeffException("Deadline `by` should follow this format:\nyyyy-MM-dd OR yyyy-MM-ddTHH:mm");
 
-            Task t = new Deadline(description, by);
+            if (isFullDay) {
+                by += "T00:00";
+            }
+            LocalDateTime byDate = LocalDateTime.parse(by);
+
+            Task t = new Deadline(description, byDate, isFullDay);
             list.add(t);
 
             saveTasks();
@@ -167,15 +224,34 @@ public class Jeff {
             String[] secondSplit = firstSplit[1].split(" /to", 2);
             String from = secondSplit[0].trim();
             String to = secondSplit[1].trim();
+            boolean isFullDay = !from.contains(":") && !to.contains(":");
 
             if (description.isEmpty())
-                throw new JeffException("Event description cannot be empty.\nFormat: event [description] /from [from] /to [to]");
+                throw new JeffException("Event `description` cannot be empty.\nFormat: event [description] /from [from] /to [to]");
             if (from.isEmpty())
-                throw new JeffException("Event from cannot be empty.\nFormat: event [description] /from [from] /to [to]");
+                throw new JeffException("Event `from` cannot be empty.\nFormat: event [description] /from [from] /to [to]");
             if (to.isEmpty())
-                throw new JeffException("Event to cannot be empty.\nFormat: event [description] /from [from] /to [to]");
+                throw new JeffException("Event `to` cannot be empty.\nFormat: event [description] /from [from] /to [to]");
+            if (!isDate(from) && !isDateTime(from))
+                throw new JeffException("Event `from` should follow this format:\nyyyy-MM-dd OR yyyy-MM-ddTHH:mm");
+            if (!isDate(to) && !isDateTime(to))
+                throw new JeffException("Event `to` should follow this format:\nyyyy-MM-dd OR yyyy-MM-ddTHH:mm");
 
-            Task t = new Event(description, from, to);
+            if (!from.contains(":")) {
+                from += "T00:00";
+            }
+            if (!to.contains(":")) {
+                to += "T00:00";
+            }
+
+            LocalDateTime fromDate = LocalDateTime.parse(from);
+            LocalDateTime toDate = LocalDateTime.parse(to);
+
+            if (fromDate.isAfter(toDate)) {
+                throw new JeffException("Event `to` must be after `from`");
+            }
+
+            Task t = new Event(description, fromDate, toDate, isFullDay);
             list.add(t);
 
             saveTasks();
