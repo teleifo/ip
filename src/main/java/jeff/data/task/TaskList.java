@@ -5,16 +5,16 @@ import jeff.data.exception.JeffException;
 import java.util.ArrayList;
 
 public class TaskList {
-    private final ArrayList<Task> TASKLIST = new ArrayList<>();
+    private final ArrayList<Task> TASKS = new ArrayList<>();
 
     public TaskList() {}
 
-    public TaskList(ArrayList<Task> tasklist) {
-        TASKLIST.addAll(tasklist);
+    public TaskList(ArrayList<Task> tasks) {
+        TASKS.addAll(tasks);
     }
 
     public void addTask(Task t) {
-        TASKLIST.add(t);
+        TASKS.add(t);
     }
 
     public Task getTask(int index) throws JeffException {
@@ -22,11 +22,11 @@ public class TaskList {
         if (size() == 0) throw new JeffException("The task list is empty!");
         if (index >= size()) throw new JeffException("List only has " + size() + " item(s)");
 
-        return TASKLIST.get(index);
+        return TASKS.get(index);
     }
 
     public ArrayList<Task> getTasks() {
-        return TASKLIST;
+        return TASKS;
     }
 
     public Task removeTask(int index) throws JeffException {
@@ -34,14 +34,14 @@ public class TaskList {
         if (size() == 0) throw new JeffException("The task list is empty!");
         if (index >= size()) throw new JeffException("List only has " + size() + " item(s)");
 
-        return TASKLIST.remove(index);
+        return TASKS.remove(index);
     }
 
     public int size() {
-        return TASKLIST.size();
+        return TASKS.size();
     }
 
     public boolean isEmpty() {
-        return TASKLIST.isEmpty();
+        return TASKS.isEmpty();
     }
 }

@@ -22,7 +22,7 @@ public class UnmarkTaskCommand extends Command {
 
         try {
             Task t = tasklist.getTask(index - 1);
-            t.updateDoneStatus(false);
+            t.updateIsDone(false);
 
             storage.saveTasks(tasklist);
 

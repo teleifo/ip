@@ -17,7 +17,7 @@ public class MarkTaskCommand extends Command {
     public void execute(Ui ui, TaskList tasklist, Storage storage) {
         try {
             Task t = tasklist.getTask(index - 1);
-            t.updateDoneStatus(true);
+            t.updateIsDone(true);
 
             storage.saveTasks(tasklist);
 

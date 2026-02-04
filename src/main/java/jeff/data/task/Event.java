@@ -11,8 +11,8 @@ public class Event extends Task {
         this(description, false, from, to, isFullDay);
     }
 
-    public Event(String description, boolean doneStatus, LocalDateTime from, LocalDateTime to, boolean isFullDay) {
-        super(description, doneStatus);
+    public Event(String description, boolean isDone, LocalDateTime from, LocalDateTime to, boolean isFullDay) {
+        super(description, isDone);
         this.from = from;
         this.to = to;
         this.isFullDay = isFullDay;

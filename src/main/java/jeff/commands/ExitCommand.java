@@ -10,7 +10,7 @@ public class ExitCommand extends Command {
         ui.showReply("Bye. Hope to see you again soon!");
     }
 
-    public static boolean isExit(Command c) {
-        return c instanceof ExitCommand;
+    public static boolean isExit(Command command) {
+        return command instanceof ExitCommand;
     }
 }
