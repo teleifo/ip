@@ -1,3 +1,8 @@
+package jeff.storage;
+
+import jeff.data.exception.JeffException;
+import jeff.data.task.*;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,7 +40,7 @@ public class Storage {
 
     public ArrayList<Task> loadTasks() throws JeffException {
         if (!Files.exists(filePath)) {
-            return null;
+            throw new JeffException("Failed to load tasks from file");
         }
 
         ArrayList<Task> tasks = new ArrayList<>();

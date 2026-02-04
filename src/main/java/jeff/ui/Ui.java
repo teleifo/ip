@@ -1,3 +1,5 @@
+package jeff.ui;
+
 import java.util.Scanner;
 import java.io.PrintStream;
 import java.io.InputStream;

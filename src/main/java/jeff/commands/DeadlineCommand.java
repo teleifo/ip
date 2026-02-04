@@ -1,3 +1,11 @@
+package jeff.commands;
+
+import jeff.data.exception.JeffException;
+import jeff.data.task.Deadline;
+import jeff.data.task.TaskList;
+import jeff.storage.Storage;
+import jeff.ui.Ui;
+
 import java.time.LocalDateTime;
 
 public class DeadlineCommand extends Command {

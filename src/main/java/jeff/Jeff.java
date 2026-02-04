@@ -1,8 +1,14 @@
+package jeff;
+
+import jeff.commands.Command;
+import jeff.commands.ExitCommand;
+import jeff.data.exception.JeffException;
+import jeff.data.task.TaskList;
+import jeff.parser.Parser;
+import jeff.storage.Storage;
+import jeff.ui.Ui;
 
 import java.nio.file.Path;
-import java.nio.file.Files;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Jeff {
     private Ui ui;
@@ -11,7 +17,7 @@ public class Jeff {
 
     private static final Path FILE_PATH = Path.of("data", "tasks.txt");
 
-    public Jeff(String filePath) {
+    public Jeff() {
         ui = new Ui();
         storage = new Storage(FILE_PATH);
 
@@ -46,6 +52,6 @@ public class Jeff {
     }
 
     public static void main(String[] args)  {
-        new Jeff("data/tasks.txt").run();
+        new Jeff().run();
     }
 }
