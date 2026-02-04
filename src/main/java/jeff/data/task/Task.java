@@ -17,6 +17,10 @@ public class Task {
         this.doneStatus = doneStatus;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public String getDoneStatusIcon() {
         return (doneStatus) ? "X" : " ";
     }

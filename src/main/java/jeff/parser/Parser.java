@@ -5,6 +5,7 @@ import jeff.commands.DeadlineCommand;
 import jeff.commands.DeleteTaskCommand;
 import jeff.commands.EventCommand;
 import jeff.commands.ExitCommand;
+import jeff.commands.FindTasksCommand;
 import jeff.commands.MarkTaskCommand;
 import jeff.commands.ToDoCommand;
 import jeff.commands.UnmarkTaskCommand;
@@ -31,6 +32,14 @@ public class Parser {
         switch (commandWord) {
         case "list":
             return new ViewTaskListCommand();
+
+        case "find":
+            arguments = arguments.trim();
+            if (arguments.isEmpty()) {
+                throw new JeffException("You need to provide a keyword/phrase.\nFormat: find [query]");
+            }
+
+            return new FindTasksCommand(arguments);
 
         case "todo":
             arguments = arguments.trim();

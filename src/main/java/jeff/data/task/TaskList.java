@@ -29,6 +29,18 @@ public class TaskList {
         return TASKLIST;
     }
 
+    public ArrayList<Task> findTasks(String query) {
+        ArrayList<Task> found = new ArrayList<>();
+
+        for (Task task : TASKLIST) {
+            if (task.getDescription().contains(query)) {
+                found.add(task);
+            }
+        }
+
+        return found;
+    }
+
     public Task removeTask(int index) throws JeffException {
         if (index < 0) throw new JeffException("Task ID must be larger than 0!");
         if (size() == 0) throw new JeffException("The task list is empty!");
