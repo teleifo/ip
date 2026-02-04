@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Jeff {
+    private final Ui ui;
+
     private static final Path TASK_FILE = Path.of("data", "tasks.txt");
-    private static final ArrayList<Task> list = new ArrayList<>();
+    private static ArrayList<Task> list = new ArrayList<>();
 
     private static boolean isInteger(String str) {
         if (str == null || str.isBlank()) {
@@ -50,13 +52,6 @@ public class Jeff {
         } catch (DateTimeParseException e) {
             return false;
         }
-    }
-
-    private static String formatReply(String message) {
-        return String.format("""
-                ____________________________________________________________
-                %s
-                ____________________________________________________________""", message);
     }
 
     private static void ensureDataDirectory() throws JeffException {
@@ -284,35 +279,40 @@ public class Jeff {
         return "Sorry, I don't know what that means!";
     }
 
-    public static void main(String[] args)  {
+    public Jeff(String filePath) {
+        ui = new Ui();
+
         try {
             ensureDataDirectory();
             loadTasks();
         } catch (JeffException e) {
-            System.out.println(formatReply(e.getMessage()));
+            ui.showError(e.getMessage());
+            list = new ArrayList<>();
         }
+    }
 
-        Scanner sc = new Scanner(System.in);
+    public void run() {
+        ui.showGreeting();
+        boolean isExit = false;
 
-        String greeting = """
-                Hello! I'm Jeff.
-                What can I do for you?""";
-        System.out.println(formatReply(greeting));
-
-        boolean loop = true;
-        while (loop) {
-            String input = sc.nextLine();
-
+        while (!isExit) {
             try {
-                String reply = handleInput(input);
-                System.out.println(formatReply(reply));
+                String userInput = ui.readCommand();
+                ui.showDivider();
+                ui.showReply(handleInput(userInput));
 
-                if (input.equals("bye") || input.startsWith("bye ")) loop = false;
+                if (userInput.equals("bye")) {
+                    isExit = true;
+                }
             } catch (JeffException e) {
-                System.out.println(formatReply(e.getMessage()));
+                ui.showError(e.getMessage());
+            } finally {
+                ui.showDivider();
             }
         }
+    }
 
-        sc.close();
+    public static void main(String[] args)  {
+        new Jeff("data/tasks.txt").run();
     }
 }
