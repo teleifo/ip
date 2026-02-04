@@ -40,7 +40,7 @@ public class Task {
     /**
      * Returns the description of this task.
      *
-     * @return the task description as a String
+     * @return the task description as a {@link String}
      */
     public String getDescription() {
         return description;
@@ -53,11 +53,12 @@ public class Task {
      */
     public String getIsDoneIcon() {
         return (isDone) ? "X" : " ";
+    }
 
     /**
      * Updates the task's completion status.
      *
-     * @param isDone true to mark the task as done, false to mark as not done
+     * @param isDone {@code true} to mark the task as done, {@code false} to mark as not done
      */
     public void updateIsDone(boolean isDone) {
         this.isDone = isDone;
@@ -69,7 +70,7 @@ public class Task {
      * The format is "{doneStatus} | {description}", where doneStatus is
      * {@code 1} if completed, {@code 0} otherwise.
      *
-     * @return a string representing the task for storage
+     * @return a {@link String} representing the task for storage
      */
     public String toFileString() {
         return String.format("%s | %s", (isDone) ? 1 : 0, description);

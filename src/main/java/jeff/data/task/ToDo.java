@@ -35,7 +35,7 @@ public class ToDo extends Task {
      * The format is "T | {doneStatus} | {description}", where "T" indicates
      * that this is a ToDo task, and doneStatus is 1 if completed, 0 otherwise.
      *
-     * @return a string representing the ToDo task for storage
+     * @return a {@link String} representing the ToDo task for storage
      */
     @Override
     public String toFileString() {

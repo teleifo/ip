@@ -46,7 +46,7 @@ public class Deadline extends Task {
      * The format is "D | {super.toFileString()} | {isFullDay} | {by}",
      * where "D" indicates this is a Deadline task and isFullDay is 1 if true, 0 if false.
      *
-     * @return a string representing the Deadline task for storage
+     * @return a {@link String} representing the Deadline task for storage
      */
     @Override
     public String toFileString() {

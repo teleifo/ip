@@ -54,7 +54,7 @@ public class TaskList {
     /**
      * Returns the internal list of tasks.
      *
-     * @return an ArrayList containing all tasks in the TaskList
+     * @return an {@link ArrayList} containing all tasks in the TaskList
      */
     public ArrayList<Task> getTasks() {
         return TASKS;

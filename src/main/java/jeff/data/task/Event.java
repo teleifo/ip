@@ -50,7 +50,7 @@ public class Event extends Task {
      * The format is "E | {super.toFileString()} | {isFullDay} | from {from} to {to}",
      * where "E" indicates an Event task and isFullDay is 1 if true, 0 if false.
      *
-     * @return a string representing the Event task for storage
+     * @return a {@link String} representing the Event task for storage
      */
     @Override
     public String toFileString() {
