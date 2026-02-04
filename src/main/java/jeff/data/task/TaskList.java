@@ -5,7 +5,7 @@ import jeff.data.exception.JeffException;
 import java.util.ArrayList;
 
 public class TaskList {
-    private static final ArrayList<Task> TASKLIST = new ArrayList<>();
+    private final ArrayList<Task> TASKLIST = new ArrayList<>();
 
     public TaskList() {}
 
