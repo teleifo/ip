@@ -61,6 +61,24 @@ public class TaskList {
     }
 
     /**
+     * Searches for tasks whose descriptions contain the given query string.
+     *
+     * @param query the string to search for in task descriptions
+     * @return an {@link ArrayList} of tasks that match the query
+     */
+    public ArrayList<Task> findTasks(String query) {
+        ArrayList<Task> found = new ArrayList<>();
+
+        for (Task task : TASKS) {
+            if (task.getDescription().contains(query)) {
+                found.add(task);
+            }
+        }
+
+        return found;
+    }
+
+    /**
      * Removes and returns the task at the specified index.
      *
      * @param index the index of the task to remove (0-based)

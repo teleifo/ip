@@ -38,13 +38,21 @@ public class Task {
     }
 
     /**
+     * Returns the description of this task.
+     *
+     * @return the task description as a String
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
      * Returns a one-character icon representing the task's completion status.
      *
      * @return {@code "X"} if the task is done, or a blank space {@code " "} if not done
      */
     public String getIsDoneIcon() {
         return (isDone) ? "X" : " ";
-    }
 
     /**
      * Updates the task's completion status.
