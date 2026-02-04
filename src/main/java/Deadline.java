@@ -5,9 +5,7 @@ public class Deadline extends Task {
     private boolean isFullDay;
 
     public Deadline(String description, LocalDateTime by, boolean isFullDay) {
-        super(description);
-        this.by = by;
-        this.isFullDay = isFullDay;
+        this(description, false, by, isFullDay);
     }
 
     public Deadline(String description, boolean doneStatus, LocalDateTime by, boolean isFullDay) {
