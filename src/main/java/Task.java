@@ -7,8 +7,7 @@ public class Task {
     private boolean doneStatus;
 
     public Task(String description) {
-        this.description = description;
-        this.doneStatus = false;
+        this(description, false);
     }
 
     public Task(String description, boolean doneStatus) {
