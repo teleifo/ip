@@ -23,10 +23,10 @@ public class ToDo extends Task {
      * Constructs a new {@code ToDo} task with the given description and done status.
      *
      * @param description the description of the task
-     * @param doneStatus  {@code true} if the task is completed, {@code false} otherwise
+     * @param isDone      {@code true} if the task is completed, {@code false} otherwise
      */
-    public ToDo(String description, boolean doneStatus) {
-        super(description, doneStatus);
+    public ToDo(String description, boolean isDone) {
+        super(description, isDone);
     }
 
     /**

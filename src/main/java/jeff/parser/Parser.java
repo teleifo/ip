@@ -31,7 +31,6 @@ public class Parser {
         switch (commandWord) {
         case "list":
             return new ViewTaskListCommand();
-
         case "todo":
             arguments = arguments.trim();
             if (arguments.isEmpty()) {
@@ -39,7 +38,6 @@ public class Parser {
             }
 
             return new ToDoCommand(arguments);
-
         case "deadline":
             String[] parts = arguments.split(" /by ", 2);
             if (parts.length < 2) {
@@ -66,7 +64,6 @@ public class Parser {
             LocalDateTime byDate = LocalDateTime.parse(by);
 
             return new DeadlineCommand(description, byDate, isFullDay);
-
         case "event":
             String[] firstSplit = arguments.split(" /from ", 2);
             if (firstSplit.length < 2) {
@@ -109,7 +106,6 @@ public class Parser {
             }
 
             return new EventCommand(description2, fromDate, toDate, isFullDay2);
-
         case "mark":
             arguments = arguments.trim();
             if (!Utils.isInteger(arguments)) {
@@ -117,7 +113,6 @@ public class Parser {
             }
 
             return new MarkTaskCommand(Integer.parseInt(arguments));
-
         case "unmark":
             arguments = arguments.trim();
             if (!Utils.isInteger(arguments)) {
@@ -125,7 +120,6 @@ public class Parser {
             }
 
             return new UnmarkTaskCommand(Integer.parseInt(arguments));
-
         case "delete":
             arguments = arguments.trim();
             if (!Utils.isInteger(arguments)) {
@@ -133,10 +127,8 @@ public class Parser {
             }
 
             return new DeleteTaskCommand(Integer.parseInt(arguments));
-
         case "bye":
             return new ExitCommand();
-
         default:
             throw new JeffException("Sorry, I don't know what that means!");
         }

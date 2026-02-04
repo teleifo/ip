@@ -13,7 +13,7 @@ public class Task {
     protected static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy, HH:mm");
     protected static final DateTimeFormatter FULL_DAY_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy");
     private String description;
-    private boolean doneStatus;
+    private boolean isDone;
 
     /**
      * Constructs a new {@code Task} with the given description.
@@ -30,11 +30,11 @@ public class Task {
      * Constructs a new {@code Task} with the given description and done status.
      *
      * @param description the description of the task
-     * @param doneStatus  {@code true} if the task is completed, {@code false} otherwise
+     * @param isDone      {@code true} if the task is completed, {@code false} otherwise
      */
-    public Task(String description, boolean doneStatus) {
+    public Task(String description, boolean isDone) {
         this.description = description;
-        this.doneStatus = doneStatus;
+        this.isDone = isDone;
     }
 
     /**
@@ -42,17 +42,17 @@ public class Task {
      *
      * @return {@code "X"} if the task is done, or a blank space {@code " "} if not done
      */
-    public String getDoneStatusIcon() {
-        return (doneStatus) ? "X" : " ";
+    public String getIsDoneIcon() {
+        return (isDone) ? "X" : " ";
     }
 
     /**
      * Updates the task's completion status.
      *
-     * @param doneStatus true to mark the task as done, false to mark as not done
+     * @param isDone true to mark the task as done, false to mark as not done
      */
-    public void updateDoneStatus(boolean doneStatus) {
-        this.doneStatus = doneStatus;
+    public void updateIsDone(boolean isDone) {
+        this.isDone = isDone;
     }
 
     /**
@@ -64,11 +64,11 @@ public class Task {
      * @return a string representing the task for storage
      */
     public String toFileString() {
-        return String.format("%s | %s", (doneStatus) ? 1 : 0, description);
+        return String.format("%s | %s", (isDone) ? 1 : 0, description);
     }
 
     @Override
     public String toString() {
-        return String.format("[%s] %s", getDoneStatusIcon(), description);
+        return String.format("[%s] %s", getIsDoneIcon(), description);
     }
 }

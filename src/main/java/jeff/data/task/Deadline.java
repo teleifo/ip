@@ -30,12 +30,12 @@ public class Deadline extends Task {
      * Constructs a new {@code Deadline} task with the given description, done status, and due date.
      *
      * @param description the description of the task
-     * @param doneStatus  {@code true} if the task is completed, {@code false} otherwise
+     * @param isDone      {@code true} if the task is completed, {@code false} otherwise
      * @param by          the date and time the task is due
      * @param isFullDay   {@code true} if the task should be treated as a full-day task
      */
-    public Deadline(String description, boolean doneStatus, LocalDateTime by, boolean isFullDay) {
-        super(description, doneStatus);
+    public Deadline(String description, boolean isDone, LocalDateTime by, boolean isFullDay) {
+        super(description, isDone);
         this.by = by;
         this.isFullDay = isFullDay;
     }
