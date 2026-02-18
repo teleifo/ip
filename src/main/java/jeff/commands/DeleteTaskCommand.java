@@ -14,16 +14,16 @@ public class DeleteTaskCommand extends Command {
     }
 
     @Override
-    public void execute(Ui ui, TaskList tasklist, Storage storage) {
+    public String execute(Ui ui, TaskList tasks, Storage storage) {
         try {
-            Task t = tasklist.removeTask(index - 1);
-            storage.saveTasks(tasklist);
+            Task t = tasks.removeTask(index - 1);
+            storage.saveTasks(tasks);
 
-            ui.showReply("Ok, I've removed this task: \n" + t
-                    + "\nThere " + ((tasklist.size() != 1) ? "are " : "is ")
-                    + tasklist.size() + " task(s) in the list.");
+            return "Ok, I've removed this task: \n" + t
+                    + "\nThere " + ((tasks.size() != 1) ? "are " : "is ")
+                    + tasks.size() + " task(s) in the list.";
         } catch (JeffException e) {
-            ui.showError(e.getMessage());
+            return e.getMessage();
         }
     }
 }

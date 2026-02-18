@@ -17,11 +17,16 @@ import java.nio.file.Path;
  * executes user commands, and persists tasks to local storage.
  */
 public class Jeff {
+    private static final String GREETING = """
+            Hello! I'm Jeff.
+            What can I do for you?""";
+
+    private static final Path FILE_PATH = Path.of("data", "tasks.txt");
+
     private Ui ui;
     private TaskList tasks;
     private Storage storage;
-
-    private static final Path FILE_PATH = Path.of("data", "tasks.txt");
+    private boolean isExit;
 
     /**
      * Constructs a new {@code Jeff} instance.
@@ -38,44 +43,26 @@ public class Jeff {
             storage.ensureDataDirectory();
             tasks = new TaskList(storage.loadTasks());
         } catch (JeffException e) {
-            ui.showError(e.getMessage());
             tasks = new TaskList();
         }
     }
 
-    /**
-     * Runs the main command-processing loop of the application.
-     * <p>
-     * Continuously reads user input, parses commands, and executes them
-     * until an exit command is issued.
-     */
-    public void run() {
-        ui.showGreeting();
-        boolean isExit = false;
-
-        while (!isExit) {
-            try {
-                String userInput = ui.readCommand();
-                ui.showDivider();
-
-                Command c = Parser.parseCommand(userInput);
-                c.execute(ui, tasks, storage);
-
-                isExit = ExitCommand.isExit(c);
-            } catch (JeffException e) {
-                ui.showError(e.getMessage());
-            } finally {
-                ui.showDivider();
-            }
-        }
+    public boolean getIsExit() {
+        return isExit;
     }
 
-    /**
-     * Launches the Jeff application.
-     *
-     * @param args Command-line arguments (not used).
-     */
-    public static void main(String[] args)  {
-        new Jeff().run();
+    public String getGreeting() {
+        return GREETING;
+    }
+
+    public String getResponse(String input) {
+        try {
+            Command c = Parser.parseCommand(input);
+            isExit = ExitCommand.isExit(c);
+
+            return c.execute(ui, tasks, storage);
+        } catch (JeffException e) {
+            return e.getMessage();
+        }
     }
 }

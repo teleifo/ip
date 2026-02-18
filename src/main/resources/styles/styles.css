@@ -1,0 +1,7 @@
+#dialogContainer {
+    -fx-background-color: #57606f;
+}
+
+#dialog {
+    -fx-text-fill: #ffffff;
+}

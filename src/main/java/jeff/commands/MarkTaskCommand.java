@@ -14,16 +14,16 @@ public class MarkTaskCommand extends Command {
     }
 
     @Override
-    public void execute(Ui ui, TaskList tasklist, Storage storage) {
+    public String execute(Ui ui, TaskList tasks, Storage storage) {
         try {
-            Task t = tasklist.getTask(index - 1);
+            Task t = tasks.getTask(index - 1);
             t.updateIsDone(true);
 
-            storage.saveTasks(tasklist);
+            storage.saveTasks(tasks);
 
-            ui.showReply("Ok, I've marked this task as done:\n" + t);
+            return "Ok, I've marked this task as done:\n" + t;
         } catch (JeffException e) {
-            ui.showError(e.getMessage());
+            return e.getMessage();
         }
     }
 }

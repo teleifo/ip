@@ -5,5 +5,7 @@ import jeff.storage.Storage;
 import jeff.ui.Ui;
 
 public class Command {
-    public void execute(Ui ui, TaskList tasklist, Storage storage) {}
+    public String execute(Ui ui, TaskList tasklist, Storage storage) {
+        return "";
+    }
 }

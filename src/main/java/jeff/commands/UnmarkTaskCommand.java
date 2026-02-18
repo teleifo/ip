@@ -14,21 +14,20 @@ public class UnmarkTaskCommand extends Command {
     }
 
     @Override
-    public void execute(Ui ui, TaskList tasklist, Storage storage) {
-        if (tasklist.isEmpty()) {
-            ui.showReply("The task list is currently empty!");
-            return;
+    public String execute(Ui ui, TaskList tasks, Storage storage) {
+        if (tasks.isEmpty()) {
+            return "The task list is currently empty!";
         }
 
         try {
-            Task t = tasklist.getTask(index - 1);
+            Task t = tasks.getTask(index - 1);
             t.updateIsDone(false);
 
-            storage.saveTasks(tasklist);
+            storage.saveTasks(tasks);
 
-            ui.showReply("Ok, I've marked this task as not done:\n" + t);
+            return "Ok, I've marked this task as not done:\n" + t;
         } catch (JeffException e) {
-            ui.showError(e.getMessage());
+            return e.getMessage();
         }
     }
 }
