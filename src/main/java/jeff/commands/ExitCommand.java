@@ -6,8 +6,8 @@ import jeff.ui.Ui;
 
 public class ExitCommand extends Command {
     @Override
-    public void execute(Ui ui, TaskList tasklist, Storage storage) {
-        ui.showReply("Bye. Hope to see you again soon!");
+    public String execute(Ui ui, TaskList tasklist, Storage storage) {
+        return "Bye. Hope to see you again soon!\nJeff will close automatically in 5 seconds...";
     }
 
     public static boolean isExit(Command command) {

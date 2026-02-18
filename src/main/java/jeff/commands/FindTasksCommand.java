@@ -16,17 +16,15 @@ public class FindTasksCommand extends Command {
     }
 
     @Override
-    public void execute(Ui ui, TaskList tasks, Storage storage) {
+    public String execute(Ui ui, TaskList tasks, Storage storage) {
         if (tasks.isEmpty()) {
-            ui.showReply("The task list is currently empty!");
-            return;
+            return "The task list is currently empty!";
         }
 
         ArrayList<Task> found = tasks.findTasks(query);
 
         if (found.isEmpty()) {
-            ui.showReply("There are no matching tasks in the list!");
-            return;
+            return "There are no matching tasks in the list!";
         }
 
         StringBuilder temp = new StringBuilder();
@@ -37,6 +35,6 @@ public class FindTasksCommand extends Command {
             if (i != found.size()) temp.append("\n");
         }
 
-        ui.showReply(temp.toString());
+        return temp.toString();
     }
 }

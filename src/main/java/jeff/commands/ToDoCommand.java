@@ -14,16 +14,16 @@ public class ToDoCommand extends Command {
     }
 
     @Override
-    public void execute(Ui ui, TaskList tasklist, Storage storage) {
+    public String execute(Ui ui, TaskList tasks, Storage storage) {
         try {
-            tasklist.addTask(task);
-            storage.saveTasks(tasklist);
+            tasks.addTask(task);
+            storage.saveTasks(tasks);
 
-            ui.showReply("Ok, I've added a ToDo task:\n" + task
-                    + "\nThere " + ((tasklist.size() > 1) ? "are " : "is ")
-                    + tasklist.size() + " task(s) in the list.");
+            return "Ok, I've added a ToDo task:\n" + task
+                    + "\nThere " + ((tasks.size() > 1) ? "are " : "is ")
+                    + tasks.size() + " task(s) in the list.";
         } catch (JeffException e) {
-            ui.showError(e.getMessage());
+            return e.getMessage();
         }
     }
 }
