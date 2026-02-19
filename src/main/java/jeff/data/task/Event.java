@@ -25,20 +25,25 @@ public class Event extends Task {
      * @param isFullDay   {@code true} if the event should be treated as full-day
      */
     public Event(String description, LocalDateTime from, LocalDateTime to, boolean isFullDay) {
-        this(description, false, from, to, isFullDay);
+        this(description, from, to, isFullDay, false);
     }
 
     /**
      * Constructs a new {@code Event} task with the given description, done status, and time range.
      *
      * @param description the description of the event
-     * @param isDone      {@code true} if the event is completed, {@code false} otherwise
      * @param from        the start date and time of the event
      * @param to          the end date and time of the event
      * @param isFullDay   {@code true} if the event should be treated as full-day
+     * @param isDone      {@code true} if the event is completed, {@code false} otherwise
      */
-    public Event(String description, boolean isDone, LocalDateTime from, LocalDateTime to, boolean isFullDay) {
+    public Event(String description, LocalDateTime from, LocalDateTime to, boolean isFullDay, boolean isDone) {
         super(description, isDone);
+
+        assert from != null : "Start time cannot be null";
+        assert to != null : "End time cannot be null";
+        assert from.isBefore(to) : "Start time must be before end time";
+
         this.from = from;
         this.to = to;
         this.isFullDay = isFullDay;

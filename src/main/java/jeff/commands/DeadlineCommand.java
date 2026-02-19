@@ -22,8 +22,8 @@ public class DeadlineCommand extends Command {
             storage.saveTasks(tasks);
 
             return "Ok, I've added a Deadline task:\n" + task
-                    + "\nThere " + ((tasks.size() > 1) ? "are " : "is ")
-                    + tasks.size() + " task(s) in the list.";
+                    + "\nThere " + ((tasks.getSize() > 1) ? "are " : "is ")
+                    + tasks.getSize() + " task(s) in the list.";
         } catch (JeffException e) {
             return e.getMessage();
         }

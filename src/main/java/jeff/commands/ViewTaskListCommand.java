@@ -16,9 +16,9 @@ public class ViewTaskListCommand extends Command {
             StringBuilder temp = new StringBuilder();
             temp.append("Here are the tasks in your list:\n");
 
-            for (int i = 1; i <= tasks.size(); i++) {
+            for (int i = 1; i <= tasks.getSize(); i++) {
                 temp.append(i).append(". ").append(tasks.getTask(i - 1));
-                if (i != tasks.size()) temp.append("\n");
+                if (i != tasks.getSize()) temp.append("\n");
             }
 
             return temp.toString();

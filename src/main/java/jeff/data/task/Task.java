@@ -33,6 +33,8 @@ public class Task {
      * @param isDone      {@code true} if the task is completed, {@code false} otherwise
      */
     public Task(String description, boolean isDone) {
+        assert description != null : "Description cannot be null";
+
         this.description = description;
         this.isDone = isDone;
     }
