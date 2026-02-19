@@ -1,6 +1,7 @@
 package jeff.data.task;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import jeff.data.exception.JeffException;
 
@@ -76,15 +77,9 @@ public class TaskList {
      * @return an {@link ArrayList} of tasks that match the query
      */
     public ArrayList<Task> findTasks(String query) {
-        ArrayList<Task> found = new ArrayList<>();
-
-        for (Task task : tasks) {
-            if (task.getDescription().contains(query)) {
-                found.add(task);
-            }
-        }
-
-        return found;
+        return tasks.stream()
+                .filter(task -> task.getDescription().contains(query))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
