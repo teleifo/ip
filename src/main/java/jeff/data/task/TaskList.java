@@ -3,6 +3,7 @@ package jeff.data.task;
 import jeff.data.exception.JeffException;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Represents a list of {@link Task} objects with utility methods for managing them.
@@ -67,15 +68,9 @@ public class TaskList {
      * @return an {@link ArrayList} of tasks that match the query
      */
     public ArrayList<Task> findTasks(String query) {
-        ArrayList<Task> found = new ArrayList<>();
-
-        for (Task task : TASKS) {
-            if (task.getDescription().contains(query)) {
-                found.add(task);
-            }
-        }
-
-        return found;
+        return TASKS.stream()
+                .filter(task -> task.getDescription().contains(query))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**

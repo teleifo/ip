@@ -50,14 +50,11 @@ public class Storage {
      * @throws JeffException if writing to the file fails
      */
     public void saveTasks(TaskList tasks) throws JeffException {
-        ArrayList<String> lines = new ArrayList<>();
-
-        for (Task t : tasks.getTasks()) {
-            lines.add(t.toFileString());
-        }
-
         try {
-            Files.write(filePath, lines);
+            Files.write(filePath,
+                    tasks.getTasks().stream()
+                            .map(Task::toFileString)
+                            .toList());
         } catch (IOException e) {
             throw new JeffException("Failed to save tasks to file");
         }
