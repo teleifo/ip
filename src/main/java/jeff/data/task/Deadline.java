@@ -23,19 +23,22 @@ public class Deadline extends Task {
      * @param isFullDay   {@code true} if the task should be treated as a full-day task
      */
     public Deadline(String description, LocalDateTime by, boolean isFullDay) {
-        this(description, false, by, isFullDay);
+        this(description, by, isFullDay, false);
     }
 
     /**
      * Constructs a new {@code Deadline} task with the given description, done status, and due date.
      *
      * @param description the description of the task
-     * @param isDone      {@code true} if the task is completed, {@code false} otherwise
      * @param by          the date and time the task is due
      * @param isFullDay   {@code true} if the task should be treated as a full-day task
+     * @param isDone      {@code true} if the task is completed, {@code false} otherwise
      */
-    public Deadline(String description, boolean isDone, LocalDateTime by, boolean isFullDay) {
+    public Deadline(String description, LocalDateTime by, boolean isFullDay, boolean isDone) {
         super(description, isDone);
+
+        assert by != null : "Deadline date cannot be null";
+
         this.by = by;
         this.isFullDay = isFullDay;
     }
