@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * perform bounds and validity checks and throw {@link JeffException} for invalid operations.
  */
 public class TaskList {
-    private final ArrayList<Task> TASKS = new ArrayList<>();
+    private final ArrayList<Task> tasks = new ArrayList<>();
 
     /**
      * Constructs an empty {@code TaskList}.
@@ -25,7 +25,7 @@ public class TaskList {
      * @param tasks an ArrayList of tasks to initialize the TaskList with
      */
     public TaskList(ArrayList<Task> tasks) {
-        TASKS.addAll(tasks);
+        this.tasks.addAll(tasks);
     }
 
     /**
@@ -34,7 +34,10 @@ public class TaskList {
      * @param task the task to add
      */
     public void addTask(Task task) {
-        TASKS.add(task);
+        int oldSize = getSize();
+        tasks.add(task);
+
+        assert getSize() == oldSize + 1 : "Task was not added correctly";
     }
 
     /**
@@ -46,10 +49,10 @@ public class TaskList {
      */
     public Task getTask(int index) throws JeffException {
         if (index < 0) throw new JeffException("Task ID must be larger than 0!");
-        if (size() == 0) throw new JeffException("The task list is empty!");
-        if (index >= size()) throw new JeffException("List only has " + size() + " item(s)");
+        if (getSize() == 0) throw new JeffException("The task list is empty!");
+        if (index >= getSize()) throw new JeffException("List only has " + getSize() + " item(s)");
 
-        return TASKS.get(index);
+        return tasks.get(index);
     }
 
     /**
@@ -58,7 +61,7 @@ public class TaskList {
      * @return an {@link ArrayList} containing all tasks in the TaskList
      */
     public ArrayList<Task> getTasks() {
-        return TASKS;
+        return tasks;
     }
 
     /**
@@ -68,7 +71,7 @@ public class TaskList {
      * @return an {@link ArrayList} of tasks that match the query
      */
     public ArrayList<Task> findTasks(String query) {
-        return TASKS.stream()
+        return tasks.stream()
                 .filter(task -> task.getDescription().contains(query))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
@@ -81,11 +84,17 @@ public class TaskList {
      * @throws JeffException if the index is invalid or the list is empty
      */
     public Task removeTask(int index) throws JeffException {
-        if (index < 0) throw new JeffException("Task ID must be larger than 0!");
-        if (size() == 0) throw new JeffException("The task list is empty!");
-        if (index >= size()) throw new JeffException("List only has " + size() + " item(s)");
+        int oldSize = getSize();
 
-        return TASKS.remove(index);
+        if (index < 0) throw new JeffException("Task ID must be larger than 0!");
+        if (oldSize == 0) throw new JeffException("The task list is empty!");
+        if (index >= oldSize) throw new JeffException("List only has " + oldSize + " item(s)");
+
+        Task removed = tasks.remove(index);
+
+        assert getSize() == oldSize - 1 : "Task was not removed correctly";
+
+        return removed;
     }
 
     /**
@@ -93,8 +102,8 @@ public class TaskList {
      *
      * @return the size of the TaskList
      */
-    public int size() {
-        return TASKS.size();
+    public int getSize() {
+        return tasks.size();
     }
 
     /**
@@ -103,6 +112,6 @@ public class TaskList {
      * @return {@code true} if the list contains no tasks, {@code false} otherwise
      */
     public boolean isEmpty() {
-        return TASKS.isEmpty();
+        return tasks.isEmpty();
     }
 }
