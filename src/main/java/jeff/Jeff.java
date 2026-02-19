@@ -1,5 +1,7 @@
 package jeff;
 
+import java.nio.file.Path;
+
 import jeff.commands.Command;
 import jeff.commands.ExitCommand;
 import jeff.data.exception.JeffException;
@@ -7,8 +9,6 @@ import jeff.data.task.TaskList;
 import jeff.parser.Parser;
 import jeff.storage.Storage;
 import jeff.ui.Ui;
-
-import java.nio.file.Path;
 
 /**
  * The main entry point of the Jeff application.
@@ -31,12 +31,11 @@ public class Jeff {
     /**
      * Constructs a new {@code Jeff} instance.
      * <p>
-     * Initializes the UI, storage, and task list. If existing task data
+     * Initializes the storage, and task list. If existing task data
      * cannot be loaded, an empty task list is created and an error
      * message is shown to the user.
      */
     public Jeff() {
-        ui = new Ui();
         storage = new Storage(FILE_PATH);
 
         try {
@@ -60,7 +59,7 @@ public class Jeff {
             Command c = Parser.parseCommand(input);
             isExit = ExitCommand.isExit(c);
 
-            return c.execute(ui, tasks, storage);
+            return c.execute(tasks, storage);
         } catch (JeffException e) {
             return e.getMessage();
         }

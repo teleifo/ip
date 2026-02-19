@@ -1,8 +1,8 @@
 package jeff.ui;
 
-import java.util.Scanner;
-import java.io.PrintStream;
 import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.Scanner;
 
 /**
  * Handles all input and output interactions with the user.
