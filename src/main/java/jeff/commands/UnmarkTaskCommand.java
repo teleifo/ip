@@ -14,7 +14,7 @@ public class UnmarkTaskCommand extends Command {
     }
 
     @Override
-    public String execute(Ui ui, TaskList tasks, Storage storage) {
+    public String execute(TaskList tasks, Storage storage) {
         if (tasks.isEmpty()) {
             return "The task list is currently empty!";
         }

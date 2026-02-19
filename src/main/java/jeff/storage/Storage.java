@@ -1,13 +1,17 @@
 package jeff.storage;
 
-import jeff.data.exception.JeffException;
-import jeff.data.task.*;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import jeff.data.exception.JeffException;
+import jeff.data.task.Deadline;
+import jeff.data.task.Event;
+import jeff.data.task.Task;
+import jeff.data.task.TaskList;
+import jeff.data.task.ToDo;
 
 /**
  * Handles reading and writing task data to a local file.
@@ -78,7 +82,9 @@ public class Storage {
 
         try {
             for (String line : Files.readAllLines(filePath)) {
-                if (line.isBlank()) continue;
+                if (line.isBlank()) {
+                    continue;
+                }
 
                 String[] parts = line.split(" \\| ");
 

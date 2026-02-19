@@ -14,7 +14,7 @@ public class MarkTaskCommand extends Command {
     }
 
     @Override
-    public String execute(Ui ui, TaskList tasks, Storage storage) {
+    public String execute(TaskList tasks, Storage storage) {
         try {
             Task t = tasks.getTask(index - 1);
             t.updateIsDone(true);
