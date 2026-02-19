@@ -14,7 +14,7 @@ public class DeleteTaskCommand extends Command {
     }
 
     @Override
-    public String execute(Ui ui, TaskList tasks, Storage storage) {
+    public String execute(TaskList tasks, Storage storage) {
         try {
             Task t = tasks.removeTask(index - 1);
             storage.saveTasks(tasks);

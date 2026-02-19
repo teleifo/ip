@@ -2,7 +2,6 @@ package jeff.commands;
 
 import java.util.ArrayList;
 
-import jeff.data.exception.JeffException;
 import jeff.data.task.Task;
 import jeff.data.task.TaskList;
 import jeff.storage.Storage;
@@ -16,7 +15,7 @@ public class FindTasksCommand extends Command {
     }
 
     @Override
-    public String execute(Ui ui, TaskList tasks, Storage storage) {
+    public String execute(TaskList tasks, Storage storage) {
         if (tasks.isEmpty()) {
             return "The task list is currently empty!";
         }
@@ -32,7 +31,9 @@ public class FindTasksCommand extends Command {
 
         for (int i = 1; i <= found.size(); i++) {
             temp.append(i).append(". ").append(found.get(i - 1));
-            if (i != found.size()) temp.append("\n");
+            if (i != found.size()) {
+                temp.append("\n");
+            }
         }
 
         return temp.toString();

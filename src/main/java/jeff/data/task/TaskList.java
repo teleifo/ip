@@ -1,8 +1,8 @@
 package jeff.data.task;
 
-import jeff.data.exception.JeffException;
-
 import java.util.ArrayList;
+
+import jeff.data.exception.JeffException;
 
 /**
  * Represents a list of {@link Task} objects with utility methods for managing them.
@@ -44,9 +44,15 @@ public class TaskList {
      * @throws JeffException if the index is invalid or the list is empty
      */
     public Task getTask(int index) throws JeffException {
-        if (index < 0) throw new JeffException("Task ID must be larger than 0!");
-        if (size() == 0) throw new JeffException("The task list is empty!");
-        if (index >= size()) throw new JeffException("List only has " + size() + " item(s)");
+        if (index < 0) {
+            throw new JeffException("Task ID must be larger than 0!");
+        }
+        if (size() == 0) {
+            throw new JeffException("The task list is empty!");
+        }
+        if (index >= size()) {
+            throw new JeffException("List only has " + size() + " item(s)");
+        }
 
         return TASKS.get(index);
     }
@@ -86,9 +92,15 @@ public class TaskList {
      * @throws JeffException if the index is invalid or the list is empty
      */
     public Task removeTask(int index) throws JeffException {
-        if (index < 0) throw new JeffException("Task ID must be larger than 0!");
-        if (size() == 0) throw new JeffException("The task list is empty!");
-        if (index >= size()) throw new JeffException("List only has " + size() + " item(s)");
+        if (index < 0) {
+            throw new JeffException("Task ID must be larger than 0!");
+        }
+        if (size() == 0) {
+            throw new JeffException("The task list is empty!");
+        }
+        if (index >= size()) {
+            throw new JeffException("List only has " + size() + " item(s)");
+        }
 
         return TASKS.remove(index);
     }

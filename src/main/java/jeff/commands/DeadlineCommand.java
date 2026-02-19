@@ -1,12 +1,12 @@
 package jeff.commands;
 
+import java.time.LocalDateTime;
+
 import jeff.data.exception.JeffException;
 import jeff.data.task.Deadline;
 import jeff.data.task.TaskList;
 import jeff.storage.Storage;
 import jeff.ui.Ui;
-
-import java.time.LocalDateTime;
 
 public class DeadlineCommand extends Command {
     private Deadline task;
@@ -16,7 +16,7 @@ public class DeadlineCommand extends Command {
     }
 
     @Override
-    public String execute(Ui ui, TaskList tasks, Storage storage) {
+    public String execute(TaskList tasks, Storage storage) {
         try {
             tasks.addTask(task);
             storage.saveTasks(tasks);

@@ -6,7 +6,7 @@ import jeff.ui.Ui;
 
 public class ExitCommand extends Command {
     @Override
-    public String execute(Ui ui, TaskList tasklist, Storage storage) {
+    public String execute(TaskList tasks, Storage storage) {
         return "Bye. Hope to see you again soon!\nJeff will close automatically in 5 seconds...";
     }
 
