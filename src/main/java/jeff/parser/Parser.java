@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.text.View;
+
+import jeff.Jeff;
 import jeff.commands.Command;
 import jeff.commands.DeadlineCommand;
 import jeff.commands.DeleteTaskCommand;
@@ -13,6 +16,7 @@ import jeff.commands.FindTasksCommand;
 import jeff.commands.MarkTaskCommand;
 import jeff.commands.ToDoCommand;
 import jeff.commands.UnmarkTaskCommand;
+import jeff.commands.ViewScheduleCommand;
 import jeff.commands.ViewTaskListCommand;
 import jeff.common.Utils;
 import jeff.data.exception.JeffException;
@@ -35,6 +39,8 @@ public class Parser {
             return handleListCommand();
         case "find":
             return handleFindCommand(arguments);
+        case "schedule":
+            return handleScheduleCommand(arguments);
         case "todo":
             return handleToDoCommand(arguments);
         case "deadline":
@@ -65,6 +71,18 @@ public class Parser {
         }
 
         return new FindTasksCommand(arguments);
+    }
+
+    private static ViewScheduleCommand handleScheduleCommand(String arguments) throws JeffException {
+        arguments = arguments.trim();
+        if (arguments.isEmpty()) {
+            throw new JeffException("You need to provide a date.\nFormat: schedule [date]");
+        }
+        if (!Utils.isDate(arguments)) {
+            throw new JeffException("Schedule `date` should follow this format:\nyyyy-MM-dd");
+        }
+
+        return new ViewScheduleCommand(arguments);
     }
 
     private static ToDoCommand handleToDoCommand(String arguments) throws JeffException {
