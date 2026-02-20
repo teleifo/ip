@@ -43,6 +43,14 @@ public class Deadline extends Task {
         this.isFullDay = isFullDay;
     }
 
+    public boolean getIsFullDay() {
+        return isFullDay;
+    }
+
+    public LocalDateTime getBy() {
+        return by;
+    }
+
     /**
      * Converts the task to a string suitable for saving to a file.
      * <p>

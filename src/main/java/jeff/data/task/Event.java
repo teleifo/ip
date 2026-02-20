@@ -49,6 +49,18 @@ public class Event extends Task {
         this.isFullDay = isFullDay;
     }
 
+    public boolean getIsFullDay() {
+        return isFullDay;
+    }
+
+    public LocalDateTime getFrom() {
+        return from;
+    }
+
+    public LocalDateTime getTo() {
+        return to;
+    }
+
     /**
      * Converts the event to a string suitable for saving to a file.
      * <p>

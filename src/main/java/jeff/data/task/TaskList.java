@@ -1,8 +1,11 @@
 package jeff.data.task;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import jeff.common.Utils;
 import jeff.data.exception.JeffException;
 
 /**
@@ -80,6 +83,65 @@ public class TaskList {
         return tasks.stream()
                 .filter(task -> task.getDescription().contains(query))
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public ArrayList<Task> viewSchedule(LocalDate date) {
+        return tasks.stream()
+                .filter(task -> occursOn(task, date))
+                .sorted(this::compareTasks)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private boolean occursOn(Task task, LocalDate date) {
+        if (task instanceof Deadline deadline) {
+            return deadline.getBy().toLocalDate().equals(date);
+        }
+
+        if (task instanceof Event event) {
+            LocalDate from = event.getFrom().toLocalDate();
+            LocalDate to = event.getTo().toLocalDate();
+
+            return (!date.isBefore(from) && !date.isAfter(to));
+        }
+
+        return false;
+    }
+
+    private int compareTasks(Task t1, Task t2) {
+        boolean t1FullDay = isFullDay(t1);
+        boolean t2FullDay = isFullDay(t2);
+
+        if (t1FullDay && !t2FullDay) return -1;
+        if (!t1FullDay && t2FullDay) return 1;
+
+        LocalTime time1 = getTime(t1);
+        LocalTime time2 = getTime(t2);
+
+        return time1.compareTo(time2);
+    }
+
+    private boolean isFullDay(Task task) {
+        if (task instanceof Deadline deadline) {
+            return deadline.getIsFullDay();
+        }
+
+        if (task instanceof Event event) {
+            return event.getIsFullDay();
+        }
+
+        return false;
+    }
+
+    private LocalTime getTime(Task task) {
+        if (task instanceof Deadline deadline) {
+            return deadline.getBy().toLocalTime();
+        }
+
+        if (task instanceof Event event) {
+            return event.getFrom().toLocalTime();
+        }
+
+        return LocalTime.MIDNIGHT;
     }
 
     /**
