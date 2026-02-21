@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import jeff.data.exception.JeffException;
 import jeff.data.task.Task;
 import jeff.data.task.TaskList;
 import jeff.storage.Storage;

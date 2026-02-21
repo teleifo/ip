@@ -3,7 +3,6 @@ package jeff.commands;
 import jeff.data.exception.JeffException;
 import jeff.data.task.TaskList;
 import jeff.storage.Storage;
-import jeff.ui.Ui;
 
 public class ViewTaskListCommand extends Command {
     @Override

@@ -6,7 +6,6 @@ import jeff.data.exception.JeffException;
 import jeff.data.task.Event;
 import jeff.data.task.TaskList;
 import jeff.storage.Storage;
-import jeff.ui.Ui;
 
 public class EventCommand extends Command {
     private Event task;

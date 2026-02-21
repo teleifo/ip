@@ -4,9 +4,6 @@ import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.text.View;
-
-import jeff.Jeff;
 import jeff.commands.Command;
 import jeff.commands.DeadlineCommand;
 import jeff.commands.DeleteTaskCommand;

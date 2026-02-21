@@ -54,14 +54,10 @@ public class Jeff {
         return GREETING;
     }
 
-    public String getResponse(String input) {
-        try {
-            Command c = Parser.parseCommand(input);
-            isExit = ExitCommand.isExit(c);
+    public String getResponse(String input) throws JeffException {
+        Command c = Parser.parseCommand(input);
+        isExit = ExitCommand.isExit(c);
 
-            return c.execute(tasks, storage);
-        } catch (JeffException e) {
-            return e.getMessage();
-        }
+        return c.execute(tasks, storage);
     }
 }
