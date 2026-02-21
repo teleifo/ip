@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import jeff.Jeff;
-import jeff.data.exception.JeffException;
+import jeff.commands.CommandResult;
 
 /**
  * Controller for the main GUI.
@@ -30,9 +30,15 @@ public class MainWindow extends AnchorPane {
 
     private Jeff jeff;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.png"));
-    private Image jeffImage = new Image(this.getClass().getResourceAsStream("/images/Jeff.png"));
+    private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.png"));
+    private final Image jeffImage = new Image(this.getClass().getResourceAsStream("/images/Jeff.png"));
 
+    /**
+     * Initializes the GUI components after FXML loading.
+     * <p>
+     * Sets up automatic scrolling, custom scroll behavior, and shows/hides the
+     * scroll-to-bottom button based on user scrolling.
+     */
     @FXML
     public void initialize() {
         dialogContainer.heightProperty().addListener((obs, oldVal, newVal) -> {
@@ -57,7 +63,11 @@ public class MainWindow extends AnchorPane {
         });
     }
 
-    /** Injects the Jeff instance */
+    /**
+     * Injects the Jeff instance to allow GUI to interact with the backend.
+     *
+     * @param j the Jeff instance to use
+     */
     public void setJeff(Jeff j) {
         jeff = j;
         dialogContainer.getChildren().add(
@@ -66,8 +76,13 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Jeff's reply and then appends them to
-     * the dialog container. Clears the user input after processing.
+     * Handles user input from the text field or send button.
+     * <p>
+     * Creates dialog boxes for both the user's input and Jeff's response,
+     * adds them to the dialog container, and clears the text field.
+     * <p>
+     * If the {@link CommandResult} indicates an error, displays an error dialog with a shake animation.
+     * If the command indicates exit, disables input and exits the application after a delay.
      */
     @FXML
     private void handleUserInput() {
@@ -76,19 +91,20 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getUserDialog(input, userImage)
         );
 
-        try {
-            String response = jeff.getResponse(input);
+        CommandResult result = jeff.getResponse(input);
+        String response = result.getMessage();
+        if (result.getIsError()) {
+            DialogBox errorDialog = DialogBox.getErrorDialog(response, jeffImage);
+            errorDialog.shake();
+            dialogContainer.getChildren().add(errorDialog);
+        } else {
             dialogContainer.getChildren().add(
                     DialogBox.getJeffDialog(response, jeffImage)
             );
-        } catch (JeffException e) {
-            DialogBox errorDialog = DialogBox.getErrorDialog(e.getMessage(), jeffImage);
-            errorDialog.shake();
-            dialogContainer.getChildren().add(errorDialog);
         }
 
         userInput.clear();
-        if (jeff.getIsExit()) {
+        if (result.getIsExit()) {
             userInput.setDisable(true);
             sendButton.setDisable(true);
 
@@ -98,7 +114,9 @@ public class MainWindow extends AnchorPane {
         }
     }
 
-    /** Scrolls the ScrollPane to the bottom */
+    /**
+     * Scrolls the dialog container to the bottom.
+     */
     @FXML
     private void scrollToBottom() {
         scrollPane.setVvalue(1.0);

@@ -8,17 +8,40 @@ import jeff.data.task.Task;
 import jeff.data.task.TaskList;
 import jeff.storage.Storage;
 
+/**
+ * Represents a command to view all tasks scheduled for a specific date.
+ * <p>
+ * Filters {@link TaskList} for tasks occurring on the given date and formats
+ * them in a human-readable schedule.
+ */
 public class ViewScheduleCommand extends Command {
     private String query;
 
+    /**
+     * Constructs a {@link ViewScheduleCommand} for the given date string.
+     *
+     * @param query the date string in ISO format (yyyy-MM-dd)
+     */
     public ViewScheduleCommand(String query) {
         this.query = query;
     }
 
+    /**
+     * Executes the command by retrieving all tasks on the specified date
+     * and returning a formatted schedule message.
+     *
+     * @param tasks the task list to search
+     * @param storage the storage system
+     * @return a {@link CommandResult} with the schedule or an error message
+     */
     @Override
-    public String execute(TaskList tasks, Storage storage) {
+    public CommandResult execute(TaskList tasks, Storage storage) {
         if (tasks.isEmpty()) {
-            return "The task list is currently empty!";
+            return new CommandResult(
+                    "The task list is currently empty!",
+                    true,
+                    false
+            );
         }
 
         LocalDate date = LocalDate.parse(query);
@@ -27,7 +50,11 @@ public class ViewScheduleCommand extends Command {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
 
         if (found.isEmpty()) {
-            return "No tasks found on " + date.format(formatter) + "!";
+            return new CommandResult(
+                    "No tasks found on " + date.format(formatter) + "!",
+                    true,
+                    false
+            );
         }
 
         StringBuilder temp = new StringBuilder();
@@ -40,6 +67,6 @@ public class ViewScheduleCommand extends Command {
             }
         }
 
-        return temp.toString();
+        return new CommandResult(temp.toString(), false, false);
     }
 }

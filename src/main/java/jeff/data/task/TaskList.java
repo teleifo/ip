@@ -84,6 +84,15 @@ public class TaskList {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+    /**
+     * Returns a list of tasks that occur on the specified date.
+     * <p>
+     * Tasks are sorted with full-day tasks first, followed by tasks
+     * with specific times in ascending order.
+     *
+     * @param date the {@link LocalDate} to filter tasks by
+     * @return an {@link ArrayList} of tasks occurring on the given date
+     */
     public ArrayList<Task> viewSchedule(LocalDate date) {
         return tasks.stream()
                 .filter(task -> occursOn(task, date))

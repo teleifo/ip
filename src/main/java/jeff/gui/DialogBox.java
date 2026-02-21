@@ -79,8 +79,8 @@ public class DialogBox extends HBox {
     public void shake() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(50), this);
         tt.setFromX(0);
-        tt.setByX(10);          // move 10px right
-        tt.setCycleCount(8);    // 4 times back and forth
+        tt.setByX(10);
+        tt.setCycleCount(8);
         tt.setAutoReverse(true);
         tt.play();
     }

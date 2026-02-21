@@ -15,13 +15,28 @@ import jeff.commands.ToDoCommand;
 import jeff.commands.UnmarkTaskCommand;
 import jeff.commands.ViewScheduleCommand;
 import jeff.commands.ViewTaskListCommand;
-import jeff.common.Utils;
+import jeff.common.ValidationUtils;
 import jeff.data.exception.JeffException;
 
+/**
+ * {@code Parser} is responsible for interpreting user input strings and
+ * converting them into executable {@link Command} objects.
+ * <p>
+ * It validates input format, extracts command words and arguments,
+ * and handles invalid input by throwing {@link JeffException}.
+ */
 public class Parser {
     public static final Pattern COMMAND_FORMAT = Pattern.compile(
             "(?<commandWord>\\S+)(?<arguments>.*)");
 
+    /**
+     * Parses the given user input and returns the corresponding {@link Command}.
+     *
+     * @param userInput The raw input string entered by the user.
+     * @return A {@link Command} object representing the requested action.
+     * @throws JeffException If the input does not match a known command
+     *                       or if arguments are missing/invalid.
+     */
     public static Command parseCommand(String userInput) throws JeffException {
         Matcher matcher = COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
@@ -75,7 +90,7 @@ public class Parser {
         if (arguments.isEmpty()) {
             throw new JeffException("You need to provide a date.\nFormat: schedule [date]");
         }
-        if (!Utils.isDate(arguments)) {
+        if (!ValidationUtils.isDate(arguments)) {
             throw new JeffException("Schedule `date` should follow this format:\nyyyy-MM-dd");
         }
 
@@ -110,7 +125,7 @@ public class Parser {
             throw new JeffException(
                     "Deadline `by` cannot be empty.\nFormat: deadline [description] /by [due by]");
         }
-        if (!Utils.isDate(by) && !Utils.isDateTime(by)) {
+        if (!ValidationUtils.isDate(by) && !ValidationUtils.isDateTime(by)) {
             throw new JeffException(
                     "Deadline `by` should follow this format:\nyyyy-MM-dd OR yyyy-MM-ddTHH:mm");
         }
@@ -153,11 +168,11 @@ public class Parser {
             throw new JeffException(
                     "Event `to` cannot be empty.\nFormat: event [description] /from [from] /to [to]");
         }
-        if (!Utils.isDate(from) && !Utils.isDateTime(from)) {
+        if (!ValidationUtils.isDate(from) && !ValidationUtils.isDateTime(from)) {
             throw new JeffException(
                     "Event `from` should follow this format:\nyyyy-MM-dd OR yyyy-MM-ddTHH:mm");
         }
-        if (!Utils.isDate(to) && !Utils.isDateTime(to)) {
+        if (!ValidationUtils.isDate(to) && !ValidationUtils.isDateTime(to)) {
             throw new JeffException(
                     "Event `to` should follow this format:\nyyyy-MM-dd OR yyyy-MM-ddTHH:mm");
         }
@@ -181,7 +196,7 @@ public class Parser {
 
     private static MarkTaskCommand handleMarkCommand(String arguments) throws JeffException {
         arguments = arguments.trim();
-        if (!Utils.isInteger(arguments)) {
+        if (!ValidationUtils.isInteger(arguments)) {
             throw new JeffException("You need to provide valid task ID!\nFormat: mark [task id]");
         }
 
@@ -190,7 +205,7 @@ public class Parser {
 
     private static UnmarkTaskCommand handleUnmarkCommand(String arguments) throws JeffException {
         arguments = arguments.trim();
-        if (!Utils.isInteger(arguments)) {
+        if (!ValidationUtils.isInteger(arguments)) {
             throw new JeffException("You need to provide valid task ID!\nFormat: unmark [task id]");
         }
 
@@ -199,7 +214,7 @@ public class Parser {
 
     private static DeleteTaskCommand handleDeleteCommand(String arguments) throws JeffException {
         arguments = arguments.trim();
-        if (!Utils.isInteger(arguments)) {
+        if (!ValidationUtils.isInteger(arguments)) {
             throw new JeffException("You need to provide valid task ID!\nFormat: delete [task id]");
         }
 
