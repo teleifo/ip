@@ -28,7 +28,7 @@ public class FindTasksCommand extends Command {
      * Executes the command by searching the {@link TaskList} for tasks containing the query.
      *
      * @param tasks the task list to search
-     * @param storage the storage system (unused)
+     * @param storage the storage system
      * @return a {@link CommandResult} containing the matching tasks or an error message
      */
     @Override

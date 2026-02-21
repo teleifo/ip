@@ -52,3 +52,11 @@
     -fx-text-fill: #ff6348;
     -fx-font-weight: bold;
 }
+
+.help-dialog .help-label {
+    -fx-text-fill: #ffffff;
+}
+
+.help-dialog .help-desc {
+    -fx-text-fill: #dfe4ea;
+}

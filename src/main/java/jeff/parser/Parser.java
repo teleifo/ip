@@ -10,8 +10,10 @@ import jeff.commands.DeleteTaskCommand;
 import jeff.commands.EventCommand;
 import jeff.commands.ExitCommand;
 import jeff.commands.FindTasksCommand;
+import jeff.commands.HelpCommand;
 import jeff.commands.MarkTaskCommand;
 import jeff.commands.ToDoCommand;
+import jeff.commands.UnknownCommand;
 import jeff.commands.UnmarkTaskCommand;
 import jeff.commands.ViewScheduleCommand;
 import jeff.commands.ViewTaskListCommand;
@@ -65,10 +67,12 @@ public class Parser {
             return handleUnmarkCommand(arguments);
         case "delete":
             return handleDeleteCommand(arguments);
+        case "help":
+            return handleHelpCommand();
         case "bye":
             return handleByeCommand();
         default:
-            throw new JeffException("Sorry, I don't know what that means!");
+            return handleUnknownCommand();
         }
     }
 
@@ -221,7 +225,15 @@ public class Parser {
         return new DeleteTaskCommand(Integer.parseInt(arguments));
     }
 
+    private static HelpCommand handleHelpCommand() {
+        return new HelpCommand();
+    }
+
     private static ExitCommand handleByeCommand() {
         return new ExitCommand();
+    }
+
+    private static UnknownCommand handleUnknownCommand() {
+        return new UnknownCommand();
     }
 }

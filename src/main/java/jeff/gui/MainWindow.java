@@ -93,10 +93,15 @@ public class MainWindow extends AnchorPane {
 
         CommandResult result = jeff.getResponse(input);
         String response = result.getMessage();
+
         if (result.getIsError()) {
             DialogBox errorDialog = DialogBox.getErrorDialog(response, jeffImage);
             errorDialog.shake();
             dialogContainer.getChildren().add(errorDialog);
+        } else if (result.getIsHelp()) {
+            dialogContainer.getChildren().add(
+                    DialogBox.getHelpDialog(response, jeffImage)
+            );
         } else {
             dialogContainer.getChildren().add(
                     DialogBox.getJeffDialog(response, jeffImage)
