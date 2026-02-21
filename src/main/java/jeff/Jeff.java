@@ -17,8 +17,8 @@ import jeff.storage.Storage;
  */
 public class Jeff {
     private static final String GREETING = """
-            Hello! I'm Jeff.
-            What can I do for you?""";
+            Hello! I'm Jeff, your personal task assistant.
+            Need a hand? Type `help` to see what I can do!""";
 
     private static final Path FILE_PATH = Path.of("data", "tasks.txt");
 
