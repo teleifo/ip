@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import jeff.data.task.Task;
 import jeff.data.task.TaskList;
 import jeff.storage.Storage;
-import jeff.ui.Ui;
 
 public class FindTasksCommand extends Command {
     private String query;

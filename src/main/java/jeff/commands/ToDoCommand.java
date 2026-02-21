@@ -4,7 +4,6 @@ import jeff.data.exception.JeffException;
 import jeff.data.task.TaskList;
 import jeff.data.task.ToDo;
 import jeff.storage.Storage;
-import jeff.ui.Ui;
 
 public class ToDoCommand extends Command {
     private ToDo task;

@@ -3,16 +3,20 @@ package jeff.gui;
 import java.io.IOException;
 import java.util.Collections;
 
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
@@ -20,7 +24,7 @@ import javafx.scene.layout.HBox;
  */
 public class DialogBox extends HBox {
     @FXML
-    private Label dialog;
+    private Label text;
     @FXML
     private ImageView displayPicture;
 
@@ -34,7 +38,8 @@ public class DialogBox extends HBox {
             e.printStackTrace();
         }
 
-        dialog.setText(text);
+        this.text.setWrapText(true);
+        this.text.setText(text);
         displayPicture.setImage(img);
     }
 
@@ -49,12 +54,34 @@ public class DialogBox extends HBox {
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        DialogBox db = new DialogBox(text, img);
+        db.getStyleClass().add("user-dialog");
+        VBox.setMargin(db, new Insets(2, 30, 2, 30));
+        return db;
     }
 
     public static DialogBox getJeffDialog(String text, Image img) {
-        var db = new DialogBox(text, img);
+        DialogBox db = new DialogBox(text, img);
         db.flip();
+        VBox.setMargin(db, new Insets(2, 30, 2, 30));
         return db;
+    }
+
+    public static DialogBox getErrorDialog(String text, Image img) {
+        DialogBox db = getJeffDialog(text, img);
+        db.getStyleClass().add("error-dialog");
+        return db;
+    }
+
+    /**
+     * Shakes the dialog box horizontally to indicate an error.
+     */
+    public void shake() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(50), this);
+        tt.setFromX(0);
+        tt.setByX(10);          // move 10px right
+        tt.setCycleCount(8);    // 4 times back and forth
+        tt.setAutoReverse(true);
+        tt.play();
     }
 }

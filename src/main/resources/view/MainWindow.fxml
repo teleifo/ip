@@ -6,40 +6,60 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.Insets?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="600.0" prefWidth="400.0"
+            prefHeight="700.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="jeff.gui.MainWindow"
-            stylesheets="@../styles/styles.css">
+            stylesheets="@../styles/styles.css"
+            id="main" >
     <children>
-        <TextField fx:id="userInput"
-                   layoutY="558.0"
-                   onAction="#handleUserInput"
-                   prefHeight="41.0"
-                   prefWidth="324.0"
-                   AnchorPane.bottomAnchor="1.0" />
-        <Button fx:id="sendButton"
-                layoutX="324.0"
-                layoutY="558.0"
-                mnemonicParsing="false"
-                onAction="#handleUserInput"
-                prefHeight="41.0"
-                prefWidth="76.0"
-                text="Send" />
         <ScrollPane fx:id="scrollPane"
                     hbarPolicy="NEVER"
-                    hvalue="1.0"
-                    prefHeight="557.0"
-                    prefWidth="400.0"
-                    vvalue="1.0">
+                    fitToWidth="true"
+                    AnchorPane.topAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0"
+                    AnchorPane.bottomAnchor="60.0"
+                    styleClass="scroll-pane">
             <content>
                 <VBox fx:id="dialogContainer"
                       id="dialogContainer"
-                      prefHeight="552.0"
-                      prefWidth="388.0" />
+                      spacing="10.0">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10" />
+                    </padding>
+                </VBox>
             </content>
         </ScrollPane>
+        <StackPane AnchorPane.rightAnchor="30.0"
+                   AnchorPane.bottomAnchor="80.0"
+                   prefWidth="40"
+                   prefHeight="40">
+            <Button fx:id="scrollButton"
+                    text="▼"
+                    StackPane.alignment="BOTTOM_RIGHT"
+                    prefWidth="40"
+                    prefHeight="40"
+                    onAction="#scrollToBottom"/>
+        </StackPane>
+        <StackPane AnchorPane.leftAnchor="20.0"
+                   AnchorPane.rightAnchor="20.0"
+                   AnchorPane.bottomAnchor="20.0"
+                   prefHeight="41.0">
+            <TextField fx:id="userInput"
+                       onAction="#handleUserInput"
+                       prefHeight="41.0"
+                       promptText="Type a message..."
+                       styleClass="text-field" />
+            <Button fx:id="sendButton"
+                    onAction="#handleUserInput"
+                    text="➤"
+                    styleClass="send-button"
+                    StackPane.alignment="CENTER_RIGHT"/>
+        </StackPane>
     </children>
 </AnchorPane>

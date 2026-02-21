@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import jeff.common.Utils;
 import jeff.data.exception.JeffException;
 
 /**
@@ -111,8 +110,12 @@ public class TaskList {
         boolean t1FullDay = isFullDay(t1);
         boolean t2FullDay = isFullDay(t2);
 
-        if (t1FullDay && !t2FullDay) return -1;
-        if (!t1FullDay && t2FullDay) return 1;
+        if (t1FullDay && !t2FullDay) {
+            return -1;
+        }
+        if (!t1FullDay && t2FullDay) {
+            return 1;
+        }
 
         LocalTime time1 = getTime(t1);
         LocalTime time2 = getTime(t2);
